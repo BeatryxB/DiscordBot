@@ -1,0 +1,12 @@
+Manifest-Version: 1.0
+Main-Class: CoreDiscordBot.Utils.Main
+Class-Path: httpcore-4.4.13.jar discojx-1.0.2.jar jackson-core-2.12.3.ja
+ r toml4j-0.7.2.jar jackson-annotations-2.12.3.jar httpmime-4.5.13.jar v
+ avr-0.10.1.jar nv-websocket-client-2.6.jar logging-interceptor-3.9.1.ja
+ r javacord-api-3.4.0.jar log4j-api-2.17.1.jar javacord-core-3.4.0.jar j
+ ackson-databind-2.12.3.jar protobuf-java-3.11.4.jar xsalsa20poly1305-0.
+ 10.1.jar okhttp-3.9.1.jar commons-codec-1.11.jar okio-1.14.0.jar common
+ s-logging-1.2.jar mysql-connector-java-8.0.28.jar httpclient-4.5.13.jar
+  gson-2.8.1.jar vavr-match-0.10.1.jar bcprov-jdk15on-1.59.jar discord-r
+ pc-java-1.0.4.jar
+
