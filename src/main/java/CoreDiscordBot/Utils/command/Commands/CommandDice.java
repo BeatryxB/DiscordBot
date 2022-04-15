@@ -32,52 +32,55 @@ public class CommandDice implements CommandExecutor {
                         userList.addTarget(u);
                         new SentMessageRoulette(event,"there is nobody in the Target list, so you are luck, you are the first target");
                         userList.setNbshot();
-                        return;
+                        FileLogNewLogs.FileLog.addLogTrace(userList.getUserTarget().toString());
+                    return;
                 }else{
                     playGameInLife(event, result, u);
+                    FileLogNewLogs.FileLog.addLogTrace(userList.getUserTarget().toString());
                     return;
                 }
         }
             if(u.isInlife()){
                 playGameInLife(event, result, u);
+                FileLogNewLogs.FileLog.addLogTrace(userList.getUserTarget().toString());
             }
             else{
-                if(userList.getUserList().get(userList.getUserList().indexOf(u)).isWasRevive()){
-                    if(userList.getUserList().get(userList.getUserList().indexOf(u)).hasdieToday()){
+                if(userList.getUserList().get(userList.getUserList().indexOf(u)).hasdieToday()){
+                    if(userList.getUserList().get(userList.getUserList().indexOf(u)).isWasRevive()){
                         new SentMessageRoulette(event, "Dead can't Shot", "You're dead today, you cannot play","Your dice is useless when you're die",Color.MAGENTA,u.getPseudo());
                     }
                     else{
-                        playGameInLife(event, result, u);
-                    }
-                }else{
-                    int result2 = (int) (Math.random()*6)+1;
-                    if(userList.getUserList().get(userList.getUserList().indexOf(u)).getTryRevive()>0){
-                        if(result==result2){
-                            new SentMessageRoulette(event, "You can revive", "You've became the phoenix today, congratulation !","The revive dice results was "+result + " and " + result2,Color.GREEN,u.getPseudo());
-                            userList.getUserList().get(userList.getUserList().indexOf(u)).revive();
-                        }
-                        else{
-                            int i = userList.getUserList().get(userList.getUserList().indexOf(u)).getTryRevive();
-                            int j = i-1;
-                            if(j!=0){
-                                new SentMessageRoulette(event, "Unlucky", "nice Try but you need more luck, you have only "+j+" try left","The revive dice results was "+result + " and " + result2,Color.ORANGE,u.getPseudo());
+                        int result2 = (int) (Math.random()*6)+1;
+                        if(userList.getUserList().get(userList.getUserList().indexOf(u)).getTryRevive()>0){
+                            if(result==result2){
+                                new SentMessageRoulette(event, "You can revive", "You've became the phoenix today, congratulation !","The revive dice results was "+result + " and " + result2,Color.GREEN,u.getPseudo());
+                                userList.getUserList().get(userList.getUserList().indexOf(u)).revive();
                             }
                             else{
-                                new SentMessageRoulette(event, "Unlucky", "nice Try but you need more luck, this is your last try","The revive dice results was "+result + " and " + result2,Color.ORANGE,u.getPseudo());
+                                int i = userList.getUserList().get(userList.getUserList().indexOf(u)).getTryRevive();
+                                int j = i-1;
+                                if(j!=0){
+                                    new SentMessageRoulette(event, "Unlucky", "nice Try but you need more luck, you have only "+j+" try left","The revive dice results was "+result + " and " + result2,Color.ORANGE,u.getPseudo());
+                                }
+                                else{
+                                    new SentMessageRoulette(event, "Unlucky", "nice Try but you need more luck, this is your last try","The revive dice results was "+result + " and " + result2,Color.ORANGE,u.getPseudo());
 
-                            }
-                            i-=1;
-                            userList.getUserList().get(userList.getUserList().indexOf(u)).setTryRevive(i);
-                            if(i==0){
-                                userList.getUserList().get(userList.getUserList().indexOf(u)).revive();
-                                userList.getUserList().get(userList.getUserList().indexOf(u)).beKilled();
+                                }
+                                i-=1;
+                                userList.getUserList().get(userList.getUserList().indexOf(u)).setTryRevive(i);
+                                if(i==0){
+                                    userList.getUserList().get(userList.getUserList().indexOf(u)).revive();
+                                    userList.getUserList().get(userList.getUserList().indexOf(u)).beKilled();
+                                }
                             }
                         }
                     }
+                }else{
+                    playGameInLife(event, result, u);
+                    FileLogNewLogs.FileLog.addLogTrace(userList.getUserTarget().toString());
                 }
             }
         }
-        FileLogNewLogs.FileLog.addLogTrace(userList.getUserTarget().toString());
     }
 
     private void playGameInLife(MessageCreateEvent event, int result, User u) {
