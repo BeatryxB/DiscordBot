@@ -8,9 +8,9 @@ import java.util.Objects;
 
 public class User implements Comparable<User>{
 
-    private String idUser, pseudo, dateDie;
+    private String idUser, pseudo, dateDie, lastDatePlay;
     private int score, tryRevive;
-    private boolean inlife,wasRevive, scoreUpdate;
+    private boolean inlife, wasRevive, scoreUpdate;
 
     public boolean isScoreUpdate() {
         return scoreUpdate;
@@ -37,6 +37,7 @@ public class User implements Comparable<User>{
         this.tryRevive = 3;
         this.scoreUpdate = false;
         this.dateDie = null;
+        this.lastDatePlay = null;
     }
 
     public int getScore() {
@@ -61,8 +62,11 @@ public class User implements Comparable<User>{
 
     public void beKilled(){
         this.inlife = false;
-        SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         Date date = new Date(System.currentTimeMillis());
+        if(!Objects.equals(this.dateDie, formatter.format(date))){
+            this.wasRevive = false;
+        }
         this.dateDie = formatter.format(date);
     }
 
@@ -86,6 +90,10 @@ public class User implements Comparable<User>{
             SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd");
             Date date = new Date(System.currentTimeMillis());
             String dateToday = formatter.format(date);
+            if(!Objects.equals(this.lastDatePlay, dateToday)){
+                this.tryRevive = 3;
+                this.lastDatePlay = dateToday;
+            }
             if(Objects.equals(this.dateDie, dateToday)){
                 return true;
             }else{
@@ -111,6 +119,7 @@ public class User implements Comparable<User>{
                 ", pseudo='" + pseudo + '\'' +
                 ", score=" + score +
                 ", inlife=" + inlife +
+                ", revive=" + wasRevive +
                 '}';
     }
 

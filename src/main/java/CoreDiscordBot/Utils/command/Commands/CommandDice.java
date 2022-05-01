@@ -1,6 +1,7 @@
 package CoreDiscordBot.Utils.command.Commands;
 
 import CoreDiscordBot.FileLog.FileLogNewLogs;
+import CoreDiscordBot.Play.User.ListShot;
 import CoreDiscordBot.Play.User.SentMessageRoulette;
 import CoreDiscordBot.Play.User.User;
 import CoreDiscordBot.Utils.command.Command;
@@ -84,22 +85,27 @@ public class CommandDice implements CommandExecutor {
     }
 
     private void playGameInLife(MessageCreateEvent event, int result, User u) {
+        ListShot.ShotList.addShot(result,u);
         if(result == 1){
             if(userList.getUserTarget().isEmpty()){
                 userList.addTarget(u);
-                new SentMessageRoulette(event,"<@"+ userList.getLastTarget().getIdUser()+">");
-                new SentMessageRoulette(event, "Suicide", "you has commit suicide <@"+userList.getLastTarget().getIdUser()+">","The dice result was "+result, Color.red,u.getPseudo());
-                userList.getUserList().get(userList.getUserList().indexOf(userList.getLastTarget())).beKilled();
-                userList.getUserList().get(userList.getUserList().indexOf(u)).hasKilled();
-                userList.removeTarget(userList.getLastTarget());
+                Suicide(event, result, u);
+            }
+            else if(userList.getLastTarget().equals(u)) {
+                Suicide(event, result, u);
             }
             else{
-            new SentMessageRoulette(event,"<@"+ userList.getLastTarget().getIdUser()+">");
-            new SentMessageRoulette(event, "win", "you've killed <@"+userList.getLastTarget().getIdUser()+">, but now you are the target","The dice result was "+result, Color.red,u.getPseudo());
-            userList.getUserList().get(userList.getUserList().indexOf(userList.getLastTarget())).beKilled();
-            userList.getUserList().get(userList.getUserList().indexOf(u)).hasKilled();
-            userList.removeTarget(userList.getLastTarget());
-        }}
+                    new SentMessageRoulette(event,"<@"+ userList.getLastTarget().getIdUser()+">");
+                    new SentMessageRoulette(event, "win", "you've killed <@"+userList.getLastTarget().getIdUser()+">, but now you are the target","The dice result was "+result, Color.red,u.getPseudo());
+                    userList.getUserList().get(userList.getUserList().indexOf(userList.getLastTarget())).beKilled();
+                    userList.getUserList().get(userList.getUserList().indexOf(u)).hasKilled();
+                    userList.removeTarget(userList.getLastTarget());
+                    if(userList.getUserTarget().contains(u)) {
+                        userList.removeTarget(u);
+                    }
+                    userList.addTarget(u);
+                }
+            }
         else{
             if(userList.getUserTarget().contains(u)){
                 userList.removeTarget(u);
@@ -111,5 +117,13 @@ public class CommandDice implements CommandExecutor {
             new SentMessageRoulette(event, "miss", "your shot was so predictable, now you are the target","The dice result was "+result,Color.white,u.getPseudo());
 
         }
+    }
+
+    private void Suicide(MessageCreateEvent event, int result, User u) {
+        new SentMessageRoulette(event,"<@"+ userList.getLastTarget().getIdUser()+">");
+        new SentMessageRoulette(event, "Suicide", "you has commit suicide <@"+userList.getLastTarget().getIdUser()+">","The dice result was "+result, Color.red,u.getPseudo());
+        userList.getUserList().get(userList.getUserList().indexOf(userList.getLastTarget())).beKilled();
+        userList.getUserList().get(userList.getUserList().indexOf(u)).hasKilled();
+        userList.removeTarget(userList.getLastTarget());
     }
 }

@@ -4,7 +4,7 @@
     <root id="root">
       <element id="archive" name="Bot.main.jar">
         <element id="directory" name="META-INF">
-          <element id="file-copy" path="$PROJECT_DIR$/out/META-INF/MANIFEST.MF" />
+          <element id="file-copy" path="$PROJECT_DIR$/out/artifacts/Fabbot/META-INF/MANIFEST.MF" />
         </element>
         <element id="module-output" name="Bot.main" />
         <element id="file-copy" path="$PROJECT_DIR$/config.toml" />
@@ -35,6 +35,7 @@
       <element id="library" level="project" name="Gradle: com.squareup.okhttp3:okhttp:3.9.1" />
       <element id="library" level="project" name="Gradle: com.fasterxml.jackson.core:jackson-core:2.12.3" />
       <element id="dir-copy" path="$PROJECT_DIR$" />
+      <element id="file-copy" path="$PROJECT_DIR$/config.toml" />
     </root>
   </artifact>
 </component>
