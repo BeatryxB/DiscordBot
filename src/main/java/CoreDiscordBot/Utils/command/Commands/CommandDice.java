@@ -34,16 +34,20 @@ public class CommandDice implements CommandExecutor {
                         new SentMessageRoulette(event,"there is nobody in the Target list, so you are luck, you are the first target");
                         userList.setNbshot();
                         FileLogNewLogs.FileLog.addLogTrace(userList.getUserTarget().toString());
+                        FileLogNewLogs.FileLog.addListShot(event.getMessage().getAuthor().getId(),result);
+
                     return;
                 }else{
                     playGameInLife(event, result, u);
                     FileLogNewLogs.FileLog.addLogTrace(userList.getUserTarget().toString());
+                    FileLogNewLogs.FileLog.addListShot(event.getMessage().getAuthor().getId(),result);
                     return;
                 }
         }
             if(u.isInlife()){
                 playGameInLife(event, result, u);
                 FileLogNewLogs.FileLog.addLogTrace(userList.getUserTarget().toString());
+                FileLogNewLogs.FileLog.addListShot(event.getMessage().getAuthor().getId(),result);
             }
             else{
                 if(userList.getUserList().get(userList.getUserList().indexOf(u)).hasdieToday()){
@@ -79,6 +83,7 @@ public class CommandDice implements CommandExecutor {
                 }else{
                     playGameInLife(event, result, u);
                     FileLogNewLogs.FileLog.addLogTrace(userList.getUserTarget().toString());
+                    FileLogNewLogs.FileLog.addListShot(event.getMessage().getAuthor().getId(),result);
                 }
             }
         }
