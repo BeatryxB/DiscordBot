@@ -13,7 +13,7 @@ public class DiceGame {
     }
 
     public String play(){
-        if(user.isInlife()){
+        if(user.isInLife()){
             if(this.diceResult == 1){
                 userBefore.beKilled();
                 return "you've killed "+userBefore.getPseudo()+", but now you are the target";

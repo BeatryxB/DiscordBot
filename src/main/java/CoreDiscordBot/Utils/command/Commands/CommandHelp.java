@@ -15,10 +15,12 @@ public class CommandHelp implements CommandExecutor {
         String ListCommand = "!Help, !help, !h,  !H = Show this menu\n" +
                 "!metamorphe, !ditto, !m = Sent one metamorphe\n" +
                 "!maid = Call one maid \n" +
-                "!d = Play Abyssal Roullet (possible to sent only in the <#960554493471260692> Channel\n" +
-                "!date = Show The abyssal Date (possible in the <#960602966975467551> Channel \n" +
+                "!d = Play Abyssal Roullet (possible to sent only in the <#960554493471260692> Channel)\n" +
+                "!date = Show The abyssal Date (possible in the <#960602966975467551> Channel) \n" +
                 "!ping = Sent one Pong \n" +
-                "!score = Show the Fab Roullet Scores, only in <#960554936209403934> Channel\n";
+                "!score = Show the Fab Roullet Scores, only in <#960554936209403934> Channel\n" +
+                "!Stats, !stats, !St, !st = Show Your stats for fab roulette, only in <#960554936209403934> Channel\n" +
+                "!target, !Target, !t, !T,  = Show the last target for the FAB Roulette, only in <#960554493471260692> Channel\n";
         String Credit = "Bot Created By BeatryxB \n Any Suggestion ? Ping me or sent me a PM";
 
 

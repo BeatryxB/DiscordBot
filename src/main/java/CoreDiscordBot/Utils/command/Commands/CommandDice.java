@@ -9,6 +9,7 @@ import CoreDiscordBot.Utils.command.CommandExecutor;
 import org.javacord.api.event.message.MessageCreateEvent;
 
 import java.awt.*;
+import java.util.Objects;
 
 import static CoreDiscordBot.Play.User.UserList.userList;
 
@@ -25,6 +26,9 @@ public class CommandDice implements CommandExecutor {
 
         if(userList.containsId(String.valueOf(event.getMessage().getAuthor().getId()))){
             u = userList.getUSerById(String.valueOf(event.getMessage().getAuthor().getId()));
+            if(u.getPseudo() != event.getMessage().getAuthor().getDisplayName()){
+                userList.getUSerById(String.valueOf(event.getMessage().getAuthor().getId())).setPseudo(event.getMessage().getAuthor().getDisplayName());
+            }
         }
         else{
             u = new User(String.valueOf(event.getMessage().getAuthor().getId()),event.getMessage().getAuthor().getDisplayName());
@@ -32,10 +36,9 @@ public class CommandDice implements CommandExecutor {
                 if(userList.getUserTarget().isEmpty()&&userList.getNbshot()==0){
                         userList.addTarget(u);
                         new SentMessageRoulette(event,"there is nobody in the Target list, so you are luck, you are the first target");
-                        userList.setNbshot();
+                        userList.getUserList().get(userList.getUserList().indexOf(u)).addShot();
                         FileLogNewLogs.FileLog.addLogTrace(userList.getUserTarget().toString());
                         FileLogNewLogs.FileLog.addListShot(event.getMessage().getAuthor().getId(),result);
-
                     return;
                 }else{
                     playGameInLife(event, result, u);
@@ -44,22 +47,25 @@ public class CommandDice implements CommandExecutor {
                     return;
                 }
         }
-            if(u.isInlife()){
+            if(u.isInLife()){
                 playGameInLife(event, result, u);
                 FileLogNewLogs.FileLog.addLogTrace(userList.getUserTarget().toString());
                 FileLogNewLogs.FileLog.addListShot(event.getMessage().getAuthor().getId(),result);
             }
             else{
-                if(userList.getUserList().get(userList.getUserList().indexOf(u)).hasdieToday()){
+                if(userList.getUserList().get(userList.getUserList().indexOf(u)).hasDieToday()){
                     if(userList.getUserList().get(userList.getUserList().indexOf(u)).isWasRevive()){
                         new SentMessageRoulette(event, "Dead can't Shot", "You're dead today, you cannot play","Your dice is useless when you're die",Color.MAGENTA,u.getPseudo());
                     }
                     else{
                         int result2 = (int) (Math.random()*6)+1;
+                        new SentMessageRoulette(event, "this player play" + userList.getUserList().get(userList.getUserList().indexOf(u)).getPseudo());
                         if(userList.getUserList().get(userList.getUserList().indexOf(u)).getTryRevive()>0){
                             if(result==result2){
-                                new SentMessageRoulette(event, "You can revive", "You've became the phoenix today, congratulation !","The revive dice results was "+result + " and " + result2,Color.GREEN,u.getPseudo());
+                                new SentMessageRoulette(event, "You can revive", "You've became the phoenix today, congratulation ! But now you are the target","The revive dice results was "+result + " and " + result2,Color.GREEN,u.getPseudo());
                                 userList.getUserList().get(userList.getUserList().indexOf(u)).revive();
+                                userList.addTarget(u);
+
                             }
                             else{
                                 int i = userList.getUserList().get(userList.getUserList().indexOf(u)).getTryRevive();
@@ -90,6 +96,8 @@ public class CommandDice implements CommandExecutor {
     }
 
     private void playGameInLife(MessageCreateEvent event, int result, User u) {
+        userList.getUserList().get(userList.getUserList().indexOf(u)).playToday();
+        userList.getUserList().get(userList.getUserList().indexOf(u)).addShot();
         ListShot.ShotList.addShot(result,u);
         if(result == 1){
             if(userList.getUserTarget().isEmpty()){
@@ -129,6 +137,7 @@ public class CommandDice implements CommandExecutor {
         new SentMessageRoulette(event, "Suicide", "you has commit suicide <@"+userList.getLastTarget().getIdUser()+">","The dice result was "+result, Color.red,u.getPseudo());
         userList.getUserList().get(userList.getUserList().indexOf(userList.getLastTarget())).beKilled();
         userList.getUserList().get(userList.getUserList().indexOf(u)).hasKilled();
+        userList.getUserList().get(userList.getUserList().indexOf(u)).Suicided();
         userList.removeTarget(userList.getLastTarget());
     }
 }

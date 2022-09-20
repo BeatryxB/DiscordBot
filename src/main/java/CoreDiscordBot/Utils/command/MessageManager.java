@@ -14,11 +14,13 @@ public class MessageManager {
         registry.addCommand(new Command("ping", "Ping the bot", new CommandPing(), "ping", "p?"));
         registry.addCommand(new Command("dice", "Roll one dice", new CommandDice(), "d", "d"));
         registry.addCommand(new Command("Score", "Score Of the Dice Game", new CommandScore(), "score", "s"));
-        registry.addCommand(new Command("MAJ Score List", "Maj Score List", new CommandMAJSCoreRoulette(), "update", "maj"));
+        //registry.addCommand(new Command("MAJ Score List", "Maj Score List", new CommandMAJSCoreRoulette(), "update", "maj"));
         registry.addCommand(new Command("Date", "DAte in dibi", new DibiDate(), "date", "dateabyssale"));
         registry.addCommand(new Command("Metamorphe", "SayTh offre métamorphe", new CommandMetamorphe(), "m", "ditto", "metamorphe"));
         registry.addCommand(new Command("Maid", "Creepy Maid", new CommandMaid(), "maid"));
         registry.addCommand(new Command("Help", "Help", new CommandHelp(), "Help", "h", "H", "help"));
+        registry.addCommand(new Command("Target", "Target", new CommandTarget(), "Target", "T", "target", "t"));
+        registry.addCommand(new Command("statistics", "Your stats in fab roulette", new CommandStatistic(), "Stats", "St", "stats", "st"));
     }
 
     private static final String PREFIX = Main.getConfigManager().getToml().getString("bot.prefix");

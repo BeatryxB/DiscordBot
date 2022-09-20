@@ -15,7 +15,7 @@ public class MAJScore {
 
     public MAJScore(MessageCreateEvent event) {
 
-        long idMessage = 961330444517929030L;
+        long idMessage = 1003657161416642581L;
         Message m = null;
         try {
             m = event.getChannel().getMessageById(idMessage).get();
