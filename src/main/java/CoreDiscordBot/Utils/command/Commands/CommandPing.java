@@ -1,6 +1,5 @@
 package CoreDiscordBot.Utils.command.Commands;
 
-import CoreDiscordBot.Play.User.MAJScore;
 import CoreDiscordBot.Utils.command.Command;
 import CoreDiscordBot.Utils.command.CommandExecutor;
 import org.javacord.api.event.message.MessageCreateEvent;

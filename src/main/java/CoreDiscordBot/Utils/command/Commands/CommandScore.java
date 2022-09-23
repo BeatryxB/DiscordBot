@@ -1,14 +1,13 @@
 package CoreDiscordBot.Utils.command.Commands;
 
-import CoreDiscordBot.Play.User.MAJScore;
+import CoreDiscordBot.Data.Getting;
 import CoreDiscordBot.Play.User.SentMessageRoulette;
-import CoreDiscordBot.Play.User.UserList;
 import CoreDiscordBot.Utils.command.Command;
 import CoreDiscordBot.Utils.command.CommandExecutor;
-import org.javacord.api.entity.message.embed.EmbedBuilder;
 import org.javacord.api.event.message.MessageCreateEvent;
 
 import java.awt.*;
+import java.sql.SQLException;
 import java.util.*;
 
 public class CommandScore implements CommandExecutor {
@@ -17,56 +16,72 @@ public class CommandScore implements CommandExecutor {
 
        //Long.toString(event.getChannel().getId()).equals("961613222178340884") ||
         if (Long.toString(event.getChannel().getId()).equals("961613222178340884") ||Long.toString(event.getChannel().getId()).equals("961613222178340884") ||Long.toString(event.getChannel().getId()).equals("960554936209403934") ||Long.toString(event.getChannel().getId()).equals("931652066458345503")){
-            new MAJScore(event);
-            UserList list = new UserList();
-            list.setUserList(UserList.userList.getUserList());
+            try {
+                String ScoreList = "Player : Score \n";
 
-            list.getSortedUserByScore();
+                ArrayList<ArrayList<Object>> listScore = new Getting().getScoreList();
+                int i = 3;
+                int j = 0;
+                for(int k=0;k<listScore.size();k++)
+                {
+                   j = (k-1 == -1) ? 0 : k-1;
 
-            String ScoreList = "Player : Score \n";
-
-            EmbedBuilder builder = null;
-
-            ArrayList<String> ranking = new ArrayList<>();
-
-            ranking.add(" :first_place:");
-            ranking.add(" :second_place:");
-            ranking.add(" :third_place:");
-
-
-            int lastScore = list.getUserList().get(0).getScore();
-
-            int index = 0;
-
-            for (int i = 0; i < list.getUserList().size(); i++) {
-                String satut="";
-                if(!list.getUserList().get(i).hasPlayToday()){
-                    satut = ":innocent:";
-                }
-                else {
-                    if (list.getUserList().get(i).isWasRevive()) {
-                        if (list.getUserList().get(i).isInLife()) {
-                            satut = ":angel:";
-                        } else {
-                            satut = ":skull_crossbones:";
-                        }
+                    if(Integer.parseInt((String)listScore.get(k).get(1))<Integer.parseInt((String)listScore.get(j).get(1))){
+                        i --;
                     }
-                    else{
-                        satut = ":innocent:";
-                    }
+
+                            ScoreList += "<@"+listScore.get(k).get(0)+">   " + listScore.get(k).get(1) + " " + getMedal(i) + " "+getStateEmoji(Integer.parseInt((String) listScore.get(k).get(2))) + " \n";
                 }
-                ScoreList += "<@" + list.getUserList().get(i).getIdUser() + "> " + list.getUserList().get(i).getScore()+ " " + satut;
-                if (lastScore != list.getUserList().get(i).getScore()) {
-                    lastScore = list.getUserList().get(i).getScore();
-                    index++;
-                }
-                if (index < 3) {
-                    ScoreList += ranking.get(index);
-                }
-                ScoreList += "\n";
+
+                new SentMessageRoulette(event,"Score Table",ScoreList,"",Color.WHITE,"SCORE LIST");
+
+
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            } catch (ClassNotFoundException e) {
+                throw new RuntimeException(e);
             }
-
-            new SentMessageRoulette(event,"Score Table",ScoreList,"",Color.WHITE,"SCORE LIST");
         }
     }
+
+
+    private String getMedal(int medal){
+        String medalEmoji = "";
+        switch (medal){
+            case 3 :
+                medalEmoji = ":first_place:";
+                break;
+
+            case 2:
+                medalEmoji = ":second_place:";
+                break;
+
+            case 1:
+                medalEmoji = ":third_place:";
+                break;
+        }
+        return medalEmoji;
+    }
+    private String getStateEmoji(int state){
+        String Emoji = "";
+        switch (state) {
+            case 1 :
+                Emoji = ":innocent:";
+                break;
+
+            case 2:
+                Emoji = ":angel:";
+                break;
+
+            case 3:
+                Emoji = ":skull_crossbones:";
+                break;
+
+            case 4:
+                Emoji = ":zombie:";
+                break;
+        }
+        return Emoji;
+    }
+
 }
