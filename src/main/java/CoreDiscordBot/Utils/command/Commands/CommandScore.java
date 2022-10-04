@@ -11,6 +11,7 @@ import java.sql.SQLException;
 import java.util.*;
 
 public class CommandScore implements CommandExecutor {
+
     @Override
     public void run(MessageCreateEvent event, Command command, String[] arg) {
 
@@ -21,7 +22,7 @@ public class CommandScore implements CommandExecutor {
 
                 ArrayList<ArrayList<Object>> listScore = new Getting().getScoreList();
                 int i = 3;
-                int j = 0;
+                int j;
                 for(int k=0;k<listScore.size();k++)
                 {
                    j = (k-1 == -1) ? 0 : k-1;
@@ -36,15 +37,19 @@ public class CommandScore implements CommandExecutor {
                 new SentMessageRoulette(event,"Score Table",ScoreList,"",Color.WHITE,"SCORE LIST");
 
 
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            } catch (ClassNotFoundException e) {
+            } catch (SQLException | ClassNotFoundException e) {
                 throw new RuntimeException(e);
             }
         }
     }
 
-
+    /**
+     * @author BeatryxB
+     * @version 3.0
+     * Give the medal for the first, second and third players
+     * @param medal Give the ranking of people
+     * @return The medal emoji
+     */
     private String getMedal(int medal){
         String medalEmoji = "";
         switch (medal){
@@ -62,6 +67,14 @@ public class CommandScore implements CommandExecutor {
         }
         return medalEmoji;
     }
+
+    /**
+     * @author BeatryxB
+     * @version 3.0
+     * Give the life's state
+     * @param state Give the life's state from the database
+     * @return The emoji of the player's state
+     */
     private String getStateEmoji(int state){
         String Emoji = "";
         switch (state) {

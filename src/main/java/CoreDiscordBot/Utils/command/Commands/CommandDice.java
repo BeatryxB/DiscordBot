@@ -19,7 +19,7 @@ public class CommandDice implements CommandExecutor {
 
             try {
                 if (new Getting().getUserIdByIdDiscord(String.valueOf(event.getMessage().getAuthor().getId())) == -1) {
-                    new Adding().addUser(String.valueOf(event.getMessage().getAuthor().getId()), event.getMessage().getAuthor().getName());
+                    new Adding().addUser(String.valueOf(event.getMessage().getAuthor().getId()), checkPseudo(event.getMessage().getAuthor().getName()));
                 }
 
                 play(event);
@@ -104,5 +104,14 @@ public class CommandDice implements CommandExecutor {
                 new Modifying().downTryRevivePeoplePlayById(new Getting().getUserIdByIdDiscord(String.valueOf(event.getMessage().getAuthor().getId())));
                 break;
         }
+    }
+
+    private String checkPseudo(String pseudo){
+        if(pseudo.contains("'")){
+            pseudo = pseudo.replace("'","''");
+            System.out.println(pseudo);
+        }
+
+        return pseudo;
     }
 }

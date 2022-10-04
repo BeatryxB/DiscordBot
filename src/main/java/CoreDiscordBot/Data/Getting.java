@@ -1,6 +1,5 @@
 package CoreDiscordBot.Data;
 
-import java.sql.Array;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -128,7 +127,7 @@ public class Getting extends Connect {
                 id =rs.getInt(3);
             }
             String select2 = "SELECT COUNT(*) FROM shots " +
-                    "WHERE id_user = " + id +";";
+                    "WHERE id_user = " + id +" AND MONTH(NOW());";
             ResultSet rs2 = state.executeQuery(select2);
             while (rs2.next()) {
                 Stats.add(rs2.getInt(1));
