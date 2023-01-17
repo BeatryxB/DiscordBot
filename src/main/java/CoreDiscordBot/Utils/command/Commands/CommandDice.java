@@ -39,7 +39,7 @@ public class CommandDice implements CommandExecutor {
                 break;
 
             case 3:
-                new SentMessageRoulette(event, "Dead can't Shot", "You're dead today, you cannot play", "Your dice is useless when you're die", Color.MAGENTA, event.getMessage().getAuthor().getName());
+                new SentMessageRoulette(event, "Dead can't shoot.", "You died this day, you cannot play", "You must not die to use the die", Color.MAGENTA, event.getMessage().getAuthor().getName());
                 break;
 
             case 4:
@@ -54,21 +54,21 @@ public class CommandDice implements CommandExecutor {
 
             if (new Getting().checkIfPeopleShot()) {
                 new Adding().addShot(String.valueOf(event.getMessage().getAuthor().getId()), result);
-                new SentMessageRoulette(event, "there is nobody in the Target list, so you are luck, you are the first target");
+                new SentMessageRoulette(event, "There is no target yet so this is you now, congratulations");
             } else {
                 if (result == 1) {
                     if (new Getting().getIdLastUserPlayInLife() == new Getting().getUserIdByIdDiscord(String.valueOf(event.getMessage().getAuthor().getId()))) {
                         new SentMessageRoulette(event, "<@" + event.getMessage().getAuthor().getId() + ">");
-                        new SentMessageRoulette(event, "Suicide", "you has commit suicide <@" + event.getMessage().getAuthor().getId() + ">", "The dice result was " + result, Color.red, event.getMessage().getAuthor().getName());
+                        new SentMessageRoulette(event, "Suicide", "you have committed suicide <@" + event.getMessage().getAuthor().getId() + ">", "You rolled " + result, Color.red, event.getMessage().getAuthor().getName());
                     } else {
                         String discordId = new Getting().getDiscordIdLastUserPlayInLife();
                         new SentMessageRoulette(event, "<@" + discordId + ">");
-                        new SentMessageRoulette(event, "win", "you've killed <@" + discordId + ">, but now you are the target", "The dice result was " + result, Color.red, event.getMessage().getAuthor().getName());
+                        new SentMessageRoulette(event, "Success", "You  killed <@" + discordId + ">, but you now are the target", "You rolled " + result, Color.red, event.getMessage().getAuthor().getName());
                     }
                     new Modifying().killLastPeopleInLife(new Getting().getIdLastUserPlayInLife(), new Getting().getUserIdByIdDiscord(String.valueOf(event.getMessage().getAuthor().getId())));
 
                 } else {
-                    new SentMessageRoulette(event, "miss", "your shot was so predictable, now you are the target", "The dice result was " + result, Color.white, event.getMessage().getAuthor().getName());
+                    new SentMessageRoulette(event, "Missed", "Your shot was too predictable, now you are the target", "You rolled " + result, Color.white, event.getMessage().getAuthor().getName());
                 }
                 new Adding().addShot(String.valueOf(event.getMessage().getAuthor().getId()), result);
 
@@ -79,7 +79,7 @@ public class CommandDice implements CommandExecutor {
         int result1 = (int) (Math.random() * 6) + 1;
         int result2 = (int) (Math.random() * 6) + 1;
         if (result1 == result2) {
-            new SentMessageRoulette(event, "You can revive", "You've became the phoenix today, congratulation ! But now you are the target", "The revive dice results was " + result1 + " and " + result2, Color.GREEN, event.getMessage().getAuthor().getName());
+            new SentMessageRoulette(event, "You can revive", "You are a phoenix today, congratulations !", "You rolled " + result1 + " and " + result2, Color.GREEN, event.getMessage().getAuthor().getName());
             new Modifying().revivePeoplePlay(new Getting().getUserIdByIdDiscord(String.valueOf(event.getMessage().getAuthor().getId())));
         }
         else{
@@ -92,7 +92,7 @@ public class CommandDice implements CommandExecutor {
 
         switch (nbTryRevive) {
             case 1:
-                new SentMessageRoulette(event, "Unlucky", "nice Try but you need more luck, this is your last try", "The revive dice results was " + result1 + " and " + result2, Color.ORANGE, event.getMessage().getAuthor().getName());
+                new SentMessageRoulette(event, "Unlucky", "Nice try ! Yet you failed, this was your last try", "You rolled " + result1 + " and " + result2, Color.ORANGE, event.getMessage().getAuthor().getName());
                 new Modifying().downTryRevivePeoplePlayById(new Getting().getUserIdByIdDiscord(String.valueOf(event.getMessage().getAuthor().getId())));
                 new Modifying().noHopePeoplePlay(new Getting().getUserIdByIdDiscord(String.valueOf(event.getMessage().getAuthor().getId())));
                 break;
@@ -100,7 +100,7 @@ public class CommandDice implements CommandExecutor {
 
             case 3:
 
-                new SentMessageRoulette(event, "Unlucky", "nice Try but you need more luck, you have only " + nbTryRevive + " try left", "The revive dice results was " + result1 + " and " + result2, Color.ORANGE, event.getMessage().getAuthor().getName());
+                new SentMessageRoulette(event, "Unlucky", "Nice try ! Though you need more luck. " + (nbTryRevive - 1) + " chances left", "You rolled " + result1 + " and " + result2, Color.ORANGE, event.getMessage().getAuthor().getName());
                 new Modifying().downTryRevivePeoplePlayById(new Getting().getUserIdByIdDiscord(String.valueOf(event.getMessage().getAuthor().getId())));
                 break;
         }
