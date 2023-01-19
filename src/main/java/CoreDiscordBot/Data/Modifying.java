@@ -17,6 +17,9 @@ public class Modifying extends Connect{
         }else if(lifeCondition==2){
             String update1 = "UPDATE user_states SET id_state = 3 WHERE id_user = "+idUserDie+"";
             state.executeUpdate(update1);
+        }else if(lifeCondition==5){
+            String update1 = "UPDATE user_states SET id_state = 6 WHERE id_user = "+idUserDie+"";
+            state.executeUpdate(update1);
         }
         String update2 = "UPDATE scores SET score = score + 1 WHERE id_user = "+idUserKiller+"";
         state.executeUpdate(update2);
@@ -35,9 +38,17 @@ public class Modifying extends Connect{
         connect.close();
     }
 
-    public void revivePeoplePlay(int idUserPlay) throws SQLException {
-        String update1 = "UPDATE user_states SET id_state = 2 WHERE id_user = "+idUserPlay+"";
-        state.executeUpdate(update1);
+    public void revivePeoplePlay(int idUserPlay, String discordId) throws SQLException, ClassNotFoundException {
+        int lifeCondition = new Getting().getStateOfPeoplePlayById(discordId);
+
+        if(lifeCondition == 4){
+            String update1 = "UPDATE user_states SET id_state = 2 WHERE id_user = "+idUserPlay+"";
+            state.executeUpdate(update1);
+        }
+        else if(lifeCondition == 6){
+            String update1 = "UPDATE user_states SET id_state = 1 WHERE id_user = "+idUserPlay+"";
+            state.executeUpdate(update1);
+        }
         state.close();
         connect.close();
     }
@@ -52,5 +63,19 @@ public class Modifying extends Connect{
     public void majLastDatePlay (int idUserPlay) throws SQLException {
         String update1 = "UPDATE user_states SET last_date_play = NOW() WHERE id_user = "+idUserPlay+"";
         state.executeUpdate(update1);
+    }
+
+    public void killLastPeopleInValhallarbre(int idUserDie, int idUserKiller) throws SQLException, ClassNotFoundException {
+
+            String update1 = "UPDATE scores SET score_valhallarbre = scores.score_valhallarbre + 1 WHERE id_user = "+idUserKiller+"";
+            state.executeUpdate(update1);
+
+            String update2 = "UPDATE scores SET score_valhallarbre = scores.score_valhallarbre - 1 WHERE id_user = "+idUserDie+"";
+            state.executeUpdate(update2);
+
+
+        state.close();
+        connect.close();
+
     }
 }

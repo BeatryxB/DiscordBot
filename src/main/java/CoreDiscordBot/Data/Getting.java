@@ -26,7 +26,7 @@ public class Getting extends Connect {
                 "INNER JOIN user_general ON shots.id_user = user_general.id_user " +
                 "INNER JOIN user_states ON user_general.id_user = user_states.id_user " +
                 "INNER JOIN state ON user_states.id_state = state.id_state " +
-                "WHERE state.id_state=1 OR state.id_state=2 ORDER BY shots.id_shot DESC LIMIT 1";
+                "WHERE state.id_state=1 OR state.id_state=2 OR state.id_state=5 ORDER BY shots.id_shot DESC LIMIT 1";
         ResultSet rs = state.executeQuery(select);
         while (rs.next()) {
             id = rs.getInt(1);
@@ -40,7 +40,7 @@ public class Getting extends Connect {
                 "INNER JOIN user_general ON shots.id_user = user_general.id_user " +
                 "INNER JOIN user_states ON user_general.id_user = user_states.id_user " +
                 "INNER JOIN state ON user_states.id_state = state.id_state " +
-                "WHERE state.id_state=1 OR state.id_state=2 ORDER BY shots.id_shot DESC LIMIT 1";
+                "WHERE state.id_state=1 OR state.id_state=2 OR state.id_state=5 ORDER BY shots.id_shot DESC LIMIT 1";
         ResultSet rs = state.executeQuery(select);
         while (rs.next()) {
             pseudo = rs.getString(1);
@@ -54,7 +54,7 @@ public class Getting extends Connect {
                 "INNER JOIN user_general ON shots.id_user = user_general.id_user " +
                 "INNER JOIN user_states ON user_general.id_user = user_states.id_user " +
                 "INNER JOIN state ON user_states.id_state = state.id_state " +
-                "WHERE state.id_state=1 OR state.id_state=2 ORDER BY shots.id_shot DESC LIMIT 1";
+                "WHERE state.id_state=1 OR state.id_state=2 OR state.id_state=5 ORDER BY shots.id_shot DESC LIMIT 1";
         ResultSet rs = state.executeQuery(select);
         while (rs.next()) {
             id = rs.getString(1);
@@ -96,12 +96,13 @@ public class Getting extends Connect {
         return nbTryRevive;
     }
 
-    public ArrayList<ArrayList<Object>> getScoreList() throws SQLException {
+    public ArrayList<ArrayList<Object>> getScoreListInLife() throws SQLException {
         ArrayList<ArrayList<Object>> listScore= new ArrayList<>();
         String select = "SELECT user_general.id_discord, scores.score, user_states.id_state FROM user_general " +
                 "INNER JOIN scores ON user_general.id_user = scores.id_user " +
                 "INNER JOIN user_states ON user_general.id_user = user_states.id_user " +
-                "ORDER BY score DESC;";
+                "WHERE MONTH(last_date_play) = MONTH(CURRENT_DATE())" +
+                "ORDER BY score DESC ;";
         ResultSet rs = state.executeQuery(select);
         while (rs.next()) {
             ArrayList<Object> user= new ArrayList<>();
@@ -127,7 +128,7 @@ public class Getting extends Connect {
                 id =rs.getInt(3);
             }
             String select2 = "SELECT COUNT(*) FROM shots " +
-                    "WHERE id_user = " + id +" AND MONTH(NOW());";
+                    "WHERE id_user = " + id +" AND MONTH(date) = MONTH(CURRENT_DATE());";
             ResultSet rs2 = state.executeQuery(select2);
             while (rs2.next()) {
                 Stats.add(rs2.getInt(1));
@@ -137,4 +138,49 @@ public class Getting extends Connect {
         return Stats;
         }
 
+    public int getIdLastUserPlayInValhallarbre() throws SQLException {
+        int id = -1;
+        String select = "SELECT user_general.id_user FROM shots_valhallarbre  " +
+                "INNER JOIN user_general ON shots_valhallarbre.id_user = user_general.id_user " +
+                "INNER JOIN user_states ON user_general.id_user = user_states.id_user " +
+                "INNER JOIN state ON user_states.id_state = state.id_state " +
+                "WHERE state.id_state=3 ORDER BY shots_valhallarbre.id_shot DESC LIMIT 1";
+        ResultSet rs = state.executeQuery(select);
+        while (rs.next()) {
+            id = rs.getInt(1);
+        }
+        return id;
+    }
+
+    public String getDiscordIdLastUserPlayInValhallarbre() throws SQLException {
+        String id = null;
+        String select = "SELECT user_general.id_discord FROM shots_valhallarbre  " +
+                "INNER JOIN user_general ON shots_valhallarbre.id_user = user_general.id_user " +
+                "INNER JOIN user_states ON user_general.id_user = user_states.id_user " +
+                "INNER JOIN state ON user_states.id_state = state.id_state " +
+                "WHERE state.id_state=3 ORDER BY shots_valhallarbre.id_shot DESC LIMIT 1";
+        ResultSet rs = state.executeQuery(select);
+        while (rs.next()) {
+            id = rs.getString(1);
+        }
+        return id;
+    }
+
+    public ArrayList<ArrayList<Object>> getScoreListInValhallabre() throws SQLException {
+        ArrayList<ArrayList<Object>> listScore= new ArrayList<>();
+        String select = "SELECT user_general.id_discord, scores.score_valhallarbre, user_states.id_state FROM user_general " +
+                "INNER JOIN scores ON user_general.id_user = scores.id_user " +
+                "INNER JOIN user_states ON user_general.id_user = user_states.id_user " +
+                "WHERE MONTH(last_date_play) = MONTH(CURRENT_DATE())" +
+                "ORDER BY score_valhallarbre DESC ;";
+        ResultSet rs = state.executeQuery(select);
+        while (rs.next()) {
+            ArrayList<Object> user= new ArrayList<>();
+            user.add(rs.getString(1));
+            user.add(rs.getString(2));
+            user.add(rs.getString(3));
+            listScore.add(user);
+        }
+        return listScore;
+    }
 }

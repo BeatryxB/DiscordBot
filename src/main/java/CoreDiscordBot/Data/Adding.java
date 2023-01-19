@@ -44,4 +44,14 @@ public class Adding extends Connect{
         PrepareToInsert.close();
         connect.close();
     }
+
+    public void addShotvalhallarbre(String idDiscord, int result) throws SQLException, ClassNotFoundException {
+        String id = String.valueOf(new Getting().getUserIdByIdDiscord(idDiscord));
+        String Insert = "INSERT INTO shots_valhallarbre(id_user, result, date) VALUES ("+ id +","+result+",NOW());";
+        PreparedStatement PrepareToInsert = connect.prepareStatement(Insert,Statement.RETURN_GENERATED_KEYS);
+        new Modifying().majLastDatePlay(new Getting().getUserIdByIdDiscord(idDiscord));
+        PrepareToInsert.execute();
+        PrepareToInsert.close();
+        connect.close();
+    }
 }

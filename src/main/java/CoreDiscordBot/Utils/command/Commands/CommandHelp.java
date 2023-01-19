@@ -20,8 +20,10 @@ public class CommandHelp implements CommandExecutor {
                 "!ping = Sent one Pong \n" +
                 "!score = Show the Fab Roullet Scores, only in <#960554936209403934> Channel\n" +
                 "!Stats, !stats, !St, !st = Show Your stats for fab roulette, only in <#960554936209403934> Channel\n" +
+                "!v, !va, !V, !VS = Play in the Valhallabre only in the <#931322424518119484> Channel\n" +
+                "!vs, !vas, !VS, !VAS = Show Your score for Valhallabre, only in <#1039292747770761267> Channel\n" +
                 "!target, !Target, !t, !T,  = Show the last target for the FAB Roulette, only in <#960554493471260692> Channel\n";
-        String Credit = "Bot Created By BeatryxB \n Any Suggestion ? Ping me or sent me a PM";
+        String Credit = "Bot Created By BeatryxB \n Any Suggestion ? Ping me or sent me a PM, \n www.beatryxb.com";
 
 
         new SentMessageRoulette(event,Title,ListCommand,Credit, Color.CYAN,"AbyssalForestBot");

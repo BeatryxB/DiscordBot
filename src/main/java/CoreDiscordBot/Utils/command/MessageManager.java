@@ -21,6 +21,8 @@ public class MessageManager {
         registry.addCommand(new Command("Help", "Help", new CommandHelp(), "Help", "h", "H", "help"));
         registry.addCommand(new Command("Target", "Target", new CommandTarget(), "Target", "T", "target", "t"));
         registry.addCommand(new Command("statistics", "Your stats in fab roulette", new CommandStatistic(), "Stats", "St", "stats", "st"));
+        registry.addCommand(new Command("Valhallarbre", "The vallahabre", new CommandValhallarbre(), "v", "va", "V", "VA"));
+        registry.addCommand(new Command("Valhallarbre Score", "The vallahabre Score", new CommandValhallarbreScore(), "vs", "vas", "VS", "VAS"));
     }
 
     private static final String PREFIX = Main.getConfigManager().getToml().getString("bot.prefix");
